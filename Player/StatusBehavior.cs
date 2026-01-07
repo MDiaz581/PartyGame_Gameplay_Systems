@@ -4,34 +4,21 @@ using UnityEngine;
 
 public class StatusBehavior : MonoBehaviour
 {
-
     public float stunTimer;
-
-
     [Tooltip("This is the base speed of which the object will get knockedback by")]
     public float innateKnockback;
-
     [Tooltip("This is an additive of the knockback speed which the object will get knockedback by while in the air")]
     public float inAirKnockback;
-
     private float time;
-
     private bool stunned;
-
     public bool inAir;
-
     [SerializeField]
     private LayerMask hitMask;
-
     [SerializeField]
     private Vector3 offset;
-
     private PlayerBehaviorRewire PBR;
-
     private CombatBehaviorObjects CBO;
-
     private Animator animator;
-
 
     // Start is called before the first frame update
     void Start()
@@ -55,11 +42,9 @@ public class StatusBehavior : MonoBehaviour
             groundChecker();
         }
 
-
         if (stunned)
         {
             time += Time.deltaTime;
-        
 
             if(time >= stunTimer)
             {
@@ -105,8 +90,6 @@ public class StatusBehavior : MonoBehaviour
         {
             GetComponent<Rigidbody2D>().AddForce(direction * force * innateKnockback, ForceMode2D.Impulse);
         }
-
-
     }
 
     private void groundChecker()
@@ -125,5 +108,4 @@ public class StatusBehavior : MonoBehaviour
             }
         }
     }
-
 }

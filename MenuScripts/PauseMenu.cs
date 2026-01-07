@@ -10,26 +10,15 @@ public class PauseMenu : MonoBehaviour
     public enum MenuState {Resume, Menu};
     public Animator resumeAnimator;
     public Animator returnAnimator;
-
     private GameManager GM;
-
     private Player player;
-
     public int stateInt;
-
     public int maxButtons;
     public int minButtons;
 
     private void Awake()
     {
-
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-
         GM = GameObject.Find("GameManager").GetComponent<GameManager>();
-
     }
     
     // Update is called once per frame

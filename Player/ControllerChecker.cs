@@ -6,7 +6,6 @@ public class ControllerChecker : MonoBehaviour
 {
     private int Xbox_One_Controller = 0;
     private int PS4_Controller = 0;
-
     public bool controllerConnected;
 
     void Update()
@@ -30,7 +29,6 @@ public class ControllerChecker : MonoBehaviour
 
             }
         }
-
 
         if (Xbox_One_Controller == 1)
         {

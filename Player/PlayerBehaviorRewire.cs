@@ -5,153 +5,88 @@ using Rewired;
 
 public class PlayerBehaviorRewire : MonoBehaviour
 {
-
     private Rigidbody2D RB;
-
     public int playerNumber = 0;
-
     public Transform modelTransform;
-
     [SerializeField]
     private LayerMask hitMask;
-
     [SerializeField]
     private LayerMask wallJumpMask;
-
     [SerializeField]
     private Player player;
-
     [Header("Walking")]
-
     [Tooltip("This is the speed of which the player will initially have when moving, this allows for the player to speed up left to right much faster, giving snappier movement")]
     public float startSpeed;
-
     [Tooltip("This is the speed of which the player will continuously have when moving, this is more of how the player will accelerate")]
     public float speed;
-
     [Tooltip("This is the max speed the player can move at")]
     public float maxSpeed;
-
     [Tooltip("This is the rate of which the player will decelerate when not moving, this changes the amount of momentum continues to have after letting go of the move button")]
     public float decelerationRate;
-
     [Header("Running")]
     [Tooltip("This is the multiplier for running, a higher number means more max speed and more acceleration rate")]
     public float runMultiplier;
-
-
     private float runSpeed;
     private bool runRight;
     private bool runLeft;
 
     [Header("Jumping")]
-
     [Tooltip("This is the speed of which the player can jump, affects the height of each jump")]
     public float jumpSpeed;
-
     [Tooltip("This is the rate of which the player can change direction during a jump, the higher the value the less control")]
     public float airControl;
-
     [Tooltip("The amount of speed before preventing you from jumping any higher, the higher the value the higher the jump. Allows for short hopping")]
     public float jumpLimitValue;
-
     public float fastFallSpeed;
-
     public float wallJumpSpeed;
-
     public float wallJumpHorizontalSpeed;
-
     public bool jumpReset;
-
     public bool jumping;
-
     public bool jumpLimit;
-
     private bool canWallJumpRight;
-
     private bool canWallJumpLeft;
-
     public bool crouching;
-
     public bool isDead;
-
     //Used to make wall jumps more responsive
     private bool onWall;
-
     public bool grounded;
-
     private Vector3 offset;
-
     private Vector3 wallJumpOffset;
-
     //This is the amount of time you have in the dodge state
     public float dodgeTime;
-
     private float dodgeTimer;
-
     public float dodgeCoolDown;
-
     public float dodgeCoolDownTimer;
-
     private bool dodgeEnded;
-
     public bool dodging;
-
     public GameObject dodgeSphere;
-
     public Animator animator;
-
     private AudioSource AS;
-
     public AudioClip sfx_jump;
-
     private float phaseTime = 0f;
-
     private float phaseTimer = 0.275f;
-
     private bool phasing;
-
     private bool aboveFallthrough;
-
     private GameManager gameManager;
-
     private CamFindPlayers CFP;
-
     private int deathFailsafe = 1;
-
     private PlayerFeedbackSystem PFS;
 
     private void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
         CFP = GameObject.Find("TargetGroup1").GetComponent<CamFindPlayers>();
-
         gameManager.numPlayers += 1;
-
         RB = GetComponent<Rigidbody2D>();
-
         offset = new Vector3(0, -0.53f);
         wallJumpOffset = new Vector3(0.05f, 0);
-
         player = ReInput.players.GetPlayer(playerNumber);
-
         animator = modelTransform.GetComponent<Animator>();
-
         jumpReset = true;
-
         AS = GameObject.Find("Audio Source").GetComponent<AudioSource>();
-
         PFS = GetComponent<PlayerFeedbackSystem>();
 
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
 
     private void Update()
     {
@@ -163,11 +98,8 @@ public class PlayerBehaviorRewire : MonoBehaviour
             FloorChecker();
             PhaseThrough();
             WallJump();
-            Dead();
             NavigateMenu();
         }
-
-        
 
         if (player.GetButtonDown("Pause"))
         {
@@ -178,7 +110,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
             Unpause();
         }
         
-
         if (phasing)
         {
             phaseTime += Time.deltaTime;
@@ -228,7 +159,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
             modelTransform.transform.rotation = Quaternion.Euler(0, 270, 0);
         }
 
-
         if (grounded && runRight)
         {
             modelTransform.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -246,13 +176,10 @@ public class PlayerBehaviorRewire : MonoBehaviour
             Jumping();
             Crouch();
         }
-
-
     }
 
     void StartWalking()
     {
-
         //Left movement
         //This is the initial force to give snappier movement
         if (player.GetButtonDown("LeftMove"))
@@ -291,22 +218,17 @@ public class PlayerBehaviorRewire : MonoBehaviour
 
     void Walking()
     {
-
         animator.SetFloat("Speed", Mathf.Abs(player.GetAxis("Horizontal")));
-
 
         if(Mathf.Abs(player.GetAxis("Horizontal")) <= 0.15f)
         {
             if (Mathf.Abs(RB.velocity.x) > 1.25f)
             {
-
                 animator.SetBool("StopBool", true);
-
             }
             else
             {
                 animator.SetBool("StopBool", false);
-
             }
         }
 
@@ -407,7 +329,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
                 RB.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
             }
 
-
             if (RB.velocity.y > jumpLimitValue)
             {
                 jumpReset = false;
@@ -424,9 +345,7 @@ public class PlayerBehaviorRewire : MonoBehaviour
             {
                 jumpLimit = true;
             }
-
         }
-
     }
 
     void PhaseThrough()
@@ -439,13 +358,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
             phasing = true;
             
         }
-        /*
-        if (player.GetButtonDoublePressUp("Down", 1f))
-        {
-            Debug.Log("doown doubles");
-            this.gameObject.layer = 8;
-        }
-        */
         if (player.GetButton("Down") && player.GetButton("Jump") && aboveFallthrough)
         {
 
@@ -454,17 +366,10 @@ public class PlayerBehaviorRewire : MonoBehaviour
             phasing = true;
 
         }
-        /*
-        if(player.GetButtonUp("Down") || player.GetButtonUp("Jump"))
-        {
-            this.gameObject.layer = 8;
-        }
-        */
     }
 
     void Crouch()
     {
-
         if (player.GetAxis("Crouch") < -0.8f)
         {
             crouching = true;
@@ -473,7 +378,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
         {
             crouching = false;
         }
-
 
         if (jumping)
         {
@@ -495,7 +399,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
                 jumpLimit = false;
             }
         }
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -523,7 +426,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
 
         if (floorChecker.collider != null)
         {
-
             if (Mathf.Abs(floorChecker.point.y - transform.position.y) > 0.6f)
             {
                 if (!jumping)
@@ -531,10 +433,8 @@ public class PlayerBehaviorRewire : MonoBehaviour
                     jumping = true;
                     jumpLimit = true;
                     grounded = false;
-
                     aboveFallthrough = false;
                 }
-
             }
             else
             {               
@@ -563,7 +463,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
             {
                 if (Mathf.Abs(wallCheckerRight.point.x - transform.position.x) < 0.35f)
                 {
-                    
                     modelTransform.transform.rotation = Quaternion.Euler(0, 270, 0);
                     canWallJumpRight = true;
 
@@ -580,13 +479,11 @@ public class PlayerBehaviorRewire : MonoBehaviour
                     {
                         RB.velocity = new Vector2(RB.velocity.x / 2f, RB.velocity.y);
                     }
-
                 }
                 else
                 {
                     canWallJumpRight = false;
                 }
-
             }
 
             RaycastHit2D wallCheckerLeft = Physics2D.CircleCast(transform.position - wallJumpOffset, 0.25f, -Vector2.right, 100f,wallJumpMask);
@@ -608,7 +505,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
                         onWall = false;
                     }
                     
-
                     if (onWall)
                     {
                        RB.velocity = new Vector2(RB.velocity.x/2f, RB.velocity.y);
@@ -640,9 +536,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
             jumpReset = false;
             Debug.Log("WallJumping");
             canWallJumpRight = false;
-
-
-
         }
 
         if (canWallJumpLeft && player.GetButtonDown("Jump") && !grounded)
@@ -684,16 +577,6 @@ public class PlayerBehaviorRewire : MonoBehaviour
 
         }
     }
-
-    void Dead()
-    {
-        if(this.gameObject.layer == LayerMask.NameToLayer("Dead"))
-        {
-            //animator.SetTrigger("Dead");
-            //this.enabled = false;
-        }
-    }
-
     public void Die()
     {
         PFS.ScreenShake();
@@ -716,28 +599,23 @@ public class PlayerBehaviorRewire : MonoBehaviour
     public void Pause()
     {
         gameManager.Pause();
-
         gameManager.pauseScreen.GetComponent<PauseMenu>().OnPause(playerNumber);
     }
 
     public void Unpause()
     {
-
-        gameManager.Unpause();
-            
+        gameManager.Unpause();   
     }
 
     public void NavigateMenu()
     {
         if (player.GetNegativeButtonDown("Vertical Move"))
         {
-
             gameManager.pauseScreen.GetComponent<PauseMenu>().ChangeState(-1);
         }
 
         if (player.GetButtonDown("Vertical Move"))
         {
-
             gameManager.pauseScreen.GetComponent<PauseMenu>().ChangeState(1);
         }
 

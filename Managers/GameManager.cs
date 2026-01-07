@@ -30,55 +30,11 @@ public class GameManager : MonoBehaviour
 
     public int menuState;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     private void Awake()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (roundOver)
-        {
-
-        }
-
-        /*
-        if(player1 != null)
-        {
-            if (player1.layer == LayerMask.NameToLayer("Dead"))
-            {
-                //endRound();
-                StartCoroutine(endRoundNum());
-                winText.text = "Player 2 Wins";
-
-                targetGroup.GetComponent<CinemachineTargetGroup>().m_Targets[0].weight = 2.25f;
-
-            }
-        }
-
-        if (player2 != null)
-        {
-            if (player2.layer == LayerMask.NameToLayer("Dead"))
-            {
-               //endRound();
-                StartCoroutine(endRoundNum());
-                winText.text = "Player 1 Wins";
-
-                targetGroup.GetComponent<CinemachineTargetGroup>().m_Targets[1].weight = 2.25f;
-                
-                
-            }
-        }
-        */
-    }
 
     public void WinCheck()
     {

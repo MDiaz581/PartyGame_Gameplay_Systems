@@ -5,11 +5,8 @@ using Cinemachine;
 
 public class CamFindPlayers : MonoBehaviour
 {
-
     public CinemachineTargetGroup TG;
-
     public GameManager GM;
-
     public GameObject[] players;
 
     [SerializeField]
@@ -30,9 +27,7 @@ public class CamFindPlayers : MonoBehaviour
         //loops and adds them into the target group list
         foreach(var player in players)
         {
-
             TG.AddMember(player.transform, 1f, 10f);
-
         }
     }
 
@@ -41,14 +36,12 @@ public class CamFindPlayers : MonoBehaviour
     {
         foreach (var player in players)
         {
-
             if (player.layer == LayerMask.NameToLayer("Dead"))
             {
                 //tracks the number of the dead player not used but could be useful
                 int pNumber = TG.FindMember(player.transform);
 
                 StartCoroutine(LerpWeight(player));
-
             }
         }
     }

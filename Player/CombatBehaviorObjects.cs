@@ -9,64 +9,36 @@ public class CombatBehaviorObjects : MonoBehaviour
 {
 
     private float fireTimer;
-
     private bool canShoot;
-
     private bool reloading;
-
     public float reloadTimer;
-
     public float meleeRate;
-
     public int ammoCount;
-
     public float punchForce;
-
     public Transform centerPoint;
-
     public Transform firePoint;
-
     public Transform laserPoint;
-
     private PlayerBehaviorRewire PBR;
-
     private Player player;
-
     public bool canPickup;
-
     public bool pickup;
-
     public GameObject weaponPickup;
-
     private LineRenderer lineRenderer;
-
     public GameObject[] bullets;
-
     public GunWeapon gunRight;
-
     public Image gunImage;
-
     public TMP_Text ammoText;
-
     private AudioSource AS;
-
     public AudioClip sfx_punchHit;
-
     public AudioClip sfx_unload;
-
     public AudioClip sfx_cock;
 
     // Start is called before the first frame update
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
-
         PBR = GetComponent<PlayerBehaviorRewire>();
-
-        
-
         player = ReInput.players.GetPlayer(PBR.playerNumber);
-
         AS = GameObject.Find("Audio Source").GetComponent<AudioSource>();
 
         canShoot = true;
@@ -117,13 +89,6 @@ public class CombatBehaviorObjects : MonoBehaviour
 
         if (reloadTimer >= gunRight.reloadTime)
         {
-            /*
-            for (int i = 0; i < gunRight.maxAmmo; i++)
-            {
-                bullets[i].SetActive(true);
-            }
-            */
-
             ammoCount = gunRight.maxAmmo;
             ammoText.text = ammoCount + "/" + gunRight.maxAmmo;
 
@@ -133,7 +98,6 @@ public class CombatBehaviorObjects : MonoBehaviour
                 AS.PlayOneShot(sfx_cock);
             }
 
-
             reloading = false;
         }
     }
@@ -142,7 +106,6 @@ public class CombatBehaviorObjects : MonoBehaviour
     {
         if(gunRight != null)
         {
-
             if (fireTimer < gunRight.fireRate)
             {
                 fireTimer += Time.deltaTime;
@@ -261,15 +224,10 @@ public class CombatBehaviorObjects : MonoBehaviour
         if (player.GetButtonDown("Drop") && gunRight == null && !weaponPickup.GetComponent<WeaponPickup>().startCDTimer)
         {
             weaponPickup.GetComponent<WeaponPickup>().OnPickup();
-
             gunRight = weaponPickup.GetComponent<WeaponPickup>().weapon;
-
             gunImage.sprite = gunRight.artwork;
-
             ammoCount = gunRight.maxAmmo;
-
             ammoText.text = ammoCount + "/" + gunRight.maxAmmo;
-
             canPickup = false;
 
         }
@@ -280,14 +238,11 @@ public class CombatBehaviorObjects : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("WeaponPickup"))
         {
-
             weaponPickup = collision.gameObject;
-
             if (!collision.gameObject.GetComponent<WeaponPickup>().startCDTimer)
             {
                 canPickup = true;
             }
-
         }
     }
 
@@ -295,11 +250,8 @@ public class CombatBehaviorObjects : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("WeaponPickup"))
         {
-
             weaponPickup = null;
-
             canPickup = false;
-
         }
     }
 
@@ -307,13 +259,9 @@ public class CombatBehaviorObjects : MonoBehaviour
     {
         if (player.GetButtonDown("Drop") && gunRight != null)
         {
-
             ammoText.text = "0/0";
-
             ammoCount = 0;
-
             gunRight = null;
-
             gunImage.sprite = null;
         }
     }
